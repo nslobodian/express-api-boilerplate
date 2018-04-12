@@ -1,0 +1,15 @@
+const mongoose = require('mongoose')
+
+const { {{properCase name}}Model } = require('../{{name}}.model')
+
+async function update{{properCase name}} (id, data) {
+  return {{properCase name}}Model.findOneAndUpdate({
+    _id: mongoose.Types.ObjectId(id),
+  }, data, {
+    new: true,
+  })
+}
+
+module.exports = {
+  update{{properCase name}},
+}

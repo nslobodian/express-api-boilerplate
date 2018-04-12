@@ -1,0 +1,18 @@
+const mongoose = require('mongoose')
+
+const { {{properCase name}}Model } = require('../{{name}}.model')
+
+function del{{properCase name}} (id) {
+  return {{properCase name}}Model.findOneAndUpdate({
+    _id: mongoose.Types.ObjectId(id),
+    deleted: false,
+  }, {
+    deleted: true,
+  }, {
+    new: true,
+  }).exec()
+}
+
+module.exports = {
+  del{{properCase name}},
+}

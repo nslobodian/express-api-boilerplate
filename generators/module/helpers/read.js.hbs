@@ -1,0 +1,14 @@
+const mongoose = require('mongoose')
+
+const { {{properCase name}}Model } = require('../{{name}}.model')
+
+async function read{{properCase name}} (id) {
+  return {{properCase name}}Model.findOne({
+    _id: mongoose.Types.ObjectId(id),
+    deleted: false,
+  }).exec()
+}
+
+module.exports = {
+  read{{properCase name}},
+}

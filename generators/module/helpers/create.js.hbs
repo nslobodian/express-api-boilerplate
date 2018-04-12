@@ -1,0 +1,12 @@
+const { {{properCase name}}Model } = require('../{{name}}.model')
+
+function create{{properCase name}} (data) {
+  return {{properCase name}}Model.create({
+    title: data.title,
+    value: data.value,
+  })
+}
+
+module.exports = {
+  create{{properCase name}},
+}

@@ -1,0 +1,198 @@
+const express = require('express')
+{{#if wantValidator}}
+const validate = require('express-validation')
+{{/if}}
+
+const jwtValidation = require('../_common/middleware/jwt.middleware')
+{{#if wantValidator}}
+const {{name}}Validation = require('./{{name}}.validator')
+{{/if}}
+const {{name}}Controller = require('./{{name}}.controller')
+
+const router = express.Router()
+{{#if wantModel }}
+
+/**
+ * @swagger
+ * definitions:
+ *   {{properCase name}}:
+ *     type: object
+ *     properties:
+ *       {{name}}Id:
+ *         type: string
+ *       createdAt:
+ *         type: string
+ *       updatedAt:
+ *         type: string
+ */
+{{/if}}
+{{#if isFIND }}
+
+/**
+ * @swagger
+ * /{{pluralize name}}:
+ *   get:
+ *     description: Returns list of {{name}}
+ *     tags:
+ *      - {{properCase name}}s
+ *     produces:
+ *      - application/json
+ *     parameters:
+ *       - $ref: '#/parameters/page'
+ *       - $ref: '#/parameters/perPage'
+ *       - name: {{name}}Id
+ *         description: {{name}} id
+ *         in: query
+ *         type: string
+ *     responses:
+ *       200:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             pagination:
+ *               type: object
+ *               $ref: '#/definitions/Pagination'
+ *             where:
+ *               type: object
+ *             {{name}}s:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/{{properCase name}}'
+ */
+router.get(
+  '/',
+  jwtValidation.required,
+  {{#if wantValidator}}
+  validate({{name}}Validation.list),
+  {{/if}}
+  {{name}}Controller.list{{properCase name}}
+)
+{{/if}}
+{{#if isCREATE }}
+
+/**
+ * @swagger
+ * /{{pluralize name}}:
+ *   post:
+ *     description: Create {{name}}
+ *     tags:
+ *       - {{properCase name}}s
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: {{name}}Id
+ *         description: {{name}} id.
+ *         in: body
+ *         required: true
+ *         type: string
+ *     responses:
+ *       201:
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/{{properCase name}}'
+ */
+router.post(
+  '/',
+  jwtValidation.required,
+  {{#if wantValidator}}
+  validate({{name}}Validation.create),
+  {{/if}}
+  {{name}}Controller.add{{properCase name}}
+)
+{{/if}}
+{{#if isREAD }}
+
+/**
+ * @swagger
+ * /{{pluralize name}}/{id}:
+ *   get:
+ *     description: Get {{name}} with specific id
+ *     tags:properCase
+ *      - {{properCase name}}s
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         type: string
+ *     responses:
+ *       200:
+ *         $ref: '#/definitions/{{properCase name}}'
+ */
+router.get(
+  '/:id',
+  jwtValidation.required,
+  {{#if wantValidator}}
+  validate({{name}}Validation.get),
+  {{/if}}
+  {{name}}Controller.get{{properCase name}}
+)
+{{/if}}
+{{#if isUPDATE }}
+
+ /**
+ * @swagger
+ * /{{pluralize name}}/{id}:
+ *   put:
+ *     description: Update {{name}}
+ *     tags:
+ *      - {{properCase name}}s
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         type: string
+ *       - name: name
+ *         type: string
+ *         in: body
+ *     responses:
+ *       200:product
+ *         $ref: '#/definitions/{{properCase name}}'
+ */
+router.put(
+  '/:id',
+  jwtValidation.required,
+  {{#if wantValidator}}
+  validate({{name}}Validation.update),
+  {{/if}}
+  {{name}}Controller.put{{properCase name}}
+)
+{{/if}}
+{{#if isDELETE }}
+
+/**
+ * @swagger
+ * /{{pluralize name}}/{id}:
+ *   delete:
+ *     description: Delete specific {{name}}
+ *     tags:
+ *      - {{properCase name}}s
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: delete at first time
+ *         $ref: '#/definitions/{{properCase name}}'
+ *       404:
+ *         description: delete non-existing {{name}}
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ */
+router.delete(
+  '/:id',
+  jwtValidation.required,
+  {{#if wantValidator}}
+  validate({{name}}Validation.delete),
+  {{/if}}
+  {{name}}Controller.delete{{properCase name}}
+)
+{{/if}}
+
+module.exports = router

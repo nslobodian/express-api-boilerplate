@@ -1,0 +1,13 @@
+function format{{properCase name}} ({{name}}) {
+  return {
+    {{name}}Id: {{name}}._id,
+    title: {{name}}.title,
+    value: {{name}}.value,
+    createdAt: {{name}}.createdAt,
+    updatedAt: {{name}}.updatedAt,
+  }
+}
+
+module.exports = {
+  format{{properCase name}},
+}

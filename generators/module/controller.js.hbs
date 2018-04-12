@@ -1,0 +1,140 @@
+{{#if isFIND }}
+const { find{{properCase name}} } = require('./helpers/find{{properCase name}}')
+{{/if}}
+{{#if isCREATE }}
+const { create{{properCase name}} } = require('./helpers/create{{properCase name}}')
+{{/if}}
+{{#if isFORMAT }}
+const { format{{properCase name}} } = require('./helpers/format{{properCase name}}')
+{{/if}}
+{{#if isUPDATE }}
+const { update{{properCase name}} } = require('./helpers/update{{properCase name}}')
+{{/if}}
+{{#if isREAD }}
+const { read{{properCase name}} } = require('./helpers/read{{properCase name}}')
+{{/if}}
+{{#if isDELETE }}
+const { del{{properCase name}} } = require('./helpers/delete{{properCase name}}')
+{{/if}}
+const { NotFoundError } = require('../_common/errors/NotFoundError')
+{{#if isFIND }}
+
+async function list{{properCase name}} (req, res, next) {
+  const {
+    page,
+    perPage,
+    title,
+    value,
+  } = req.query
+
+  try {
+    const {{pluralize name}} = await find{{properCase name}}({
+      paginafindtion: {
+        page,
+        perPage,
+      },
+      where: {
+        title,
+        value,
+      },
+    })
+
+    res.status(200).json({
+      pagination: {{pluralize name}}.pagination,
+      where: {{pluralize name}}.where,
+      {{pluralize name}}: await Promise.all({{pluralize name}}.data.map(format{{properCase name}})),
+    })
+  } catch (err) {
+    return next(err)
+  }
+}
+{{/if}}
+{{#if isCREATE }}
+
+async function add{{properCase name}} (req, res, next) {
+  const data = {
+    title: req.body.title,
+    value: req.body.value,
+  }
+
+  try {
+    const attribute = await create{{properCase name}}(data)
+
+    res.status(201).json(format{{properCase name}}(attribute))
+  } catch (err) {
+    return next(err)
+  }
+}
+{{/if}}
+{{#if isREAD }}
+
+async function get{{properCase name}} (req, res, next) {
+  const { id } = req.params
+
+  try {
+    const result = await read{{properCase name}}(id)
+
+    if (!result) {
+      throw new NotFoundError('err-{{name}}-not-found')
+    }
+
+    res.status(200).json(await format{{properCase name}}(result))
+  } catch (err) {
+    return next(err)
+  }
+}
+{{/if}}
+{{#if isUPDATE }}
+
+async function put{{properCase name}} (req, res, next) {
+  const { id } = req.params
+  const data = {
+    title: req.body.title,
+    value: req.body.value,
+  }
+
+  try {
+    const updated{{properCase name}} = await update{{properCase name}}(id, data)
+
+    res.status(200).json(await format{{properCase name}}(updated{{properCase name}}))
+  } catch (err) {
+    return next(err)
+  }
+}
+{{/if}}
+{{#if isDELETE }}
+
+async function delete{{properCase name}} (req, res, next) {
+  const { id } = req.params
+
+  try {
+    const result = await del{{properCase name}}(id)
+
+    if (!result) {
+      throw new NotFoundError('err-{{name}}-not-found')
+    }
+
+    res.status(200).json(await format{{properCase name}}(result))
+  } catch (err) {
+    return next(err)
+  }
+}
+{{/if}}
+
+module.exports = {
+  {{#if isUPDATE }}
+  put{{properCase name}},
+  {{/if}}
+  {{#if isDELETE }}
+  delete{{properCase name}},
+  {{/if}}
+  {{#if isREAD }}
+  get{{properCase name}},
+  {{/if}}
+  {{#if isCREATE }}
+  add{{properCase name}},
+  {{/if}}
+  {{#if isFIND }}
+  list{{properCase name}},
+  {{/if}}
+}
