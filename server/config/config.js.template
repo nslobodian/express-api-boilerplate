@@ -1,0 +1,18 @@
+module.exports = {
+  env: 'dev',
+  name: 'api-local.com',
+  port: 3750,
+  db: 'mongodb://...',
+  defaultLanguage: 'en',
+
+  sentry: {
+    dsn: 'dsn',
+    public_dsn: 'public_dsn',
+    csp: 'csp',
+    enableLogging: false,
+  },
+
+  passSalt: 'Your salt',
+  jwtSecret: ".jwtSecret",
+  jwtTokenExpirationTime: 24 * 60 * 60 * 7 //  7 days
+}

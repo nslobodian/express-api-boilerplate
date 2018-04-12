@@ -1,0 +1,75 @@
+parameters:
+  page:
+    name: page
+    description: Number of the page
+    in: query
+    type: Integer
+    default: 1
+  perPage:
+    name: perPage
+    description: Count of items per page
+    in: query
+    type: Integer
+    default: 20
+definitions:
+  Pagination:
+    type: object
+    properties:
+      page:
+        type: integer
+        example: 1
+      pages:
+        type: integer
+        example: 10
+      perPage:
+        type: integer
+        example: 20
+      totalCount:
+        type: integer
+        example: 100
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+        default: Item not found.
+      status:
+        type: string
+        default: Not Found
+      statusCode:
+        type: integer
+        default: 404
+  Translation:
+    type: object
+    properties:
+      en:
+        type: string
+        example: text_in_en
+      sk:
+        type: string
+        example: text_in_sk
+      hu:
+        type: string
+        example: text_in_hu
+      cz:
+        type: string
+        example: text_in_cz
+      pl:
+        type: string
+        example: text_in_pl
+  Note:
+    type: object
+    properties:
+      date:
+        type: string
+      from:
+        type: object
+      note:
+        type: string
+  Image:
+    type: object
+    properties:
+      url:
+        type: string
+      alt:
+        type: string
