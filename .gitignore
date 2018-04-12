@@ -1,0 +1,21 @@
+# IDE
+.idea/
+.vscode
+
+# Build
+dist
+
+# NPM
+node_modules
+npm-debug.log
+coverage
+
+# Vagrant
+.vagrant
+
+# Config
+server/config/config.js
+yarn.lock
+
+# OS
+.DS_Store

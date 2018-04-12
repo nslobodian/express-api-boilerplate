@@ -1,0 +1,9 @@
+.vscode
+.idea
+data
+
+.dockerignore
+Dockerfile
+
+node_modules
+npm-debug.log
